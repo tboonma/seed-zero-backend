@@ -14,16 +14,33 @@ To make sure you understand the material, there are some requirements:
 ### Installation
 1. Fork this repository.
 
-2. Clone the project to your local machine.
+2. Clone the project to your local machine. Open a terminal first and go to some directory.
 ```
 git clone https://github.com/{your-github-account}/seed-zero-backend.git
 ```
-3. Edit code in `#TODO`
-4. Upload your work
+3. Go to your cloned directory in your machine
+```
+cd seed-zero-backend
+```
+4. use python virtual environment
+```
+python -m venv venv
+```
+5. Install dependencies
+```
+pip install -r requirements.txt
+```
+6. Run the app
+```
+uvicorn main:app --reload
+```
+7. Edit code in `#TODO`
+8. Test whether your code works.
+9. Upload your work
 ```
 git add .
 git commit -m "Finish work"
 git push
 ```
-5. Open Pull Request in this repository.
-6. Go to your opened Pull Request and click the link in comment.
+10. Open Pull Request in this repository.
+11. Go to your opened Pull Request and click the link in comment.
