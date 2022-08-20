@@ -34,7 +34,7 @@ pip install -r requirements.txt
 ```
 uvicorn main:app --reload
 ```
-7. Edit code in `#TODO`
+7. Edit code in `#TODO` in `app.py`
 8. Test whether your code works by open these url in your browser.
 - http://localhost:5500/seed/zero should display your text
 - http://localhost:5500/math/1/2 should display 3
