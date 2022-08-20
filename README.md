@@ -1,5 +1,5 @@
 # Seed: Zero Backend Starter code
-This exercise is for Backend session in Seed: Zero.   
+This exercise is for Backend session in **Seed: Zero**.   
 To make sure you understand the material, there are some requirements:
 - Backend is runnable.
 - Backend has endpoint named `/seed/zero`
