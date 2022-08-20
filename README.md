@@ -14,5 +14,5 @@ To make sure you understand the material, there are some requirements:
 ### Installation
 1. Clone this project to your local machine.
 ```
-git clone 
+git clone https://github.com/tboonma/seed-zero-backend.git
 ```
