@@ -12,7 +12,18 @@ To make sure you understand the material, there are some requirements:
 | Python | 3.9 |
 
 ### Installation
-1. Clone this project to your local machine.
+1. Fork this repository.
+
+2. Clone the project to your local machine.
 ```
-git clone https://github.com/tboonma/seed-zero-backend.git
+git clone https://github.com/{your-github-account}/seed-zero-backend.git
 ```
+3. Edit code in `#TODO`
+4. Upload your work
+```
+git add .
+git commit -m "Finish work"
+git push
+```
+5. Open Pull Request in this repository.
+6. Go to your opened Pull Request and click the link in comment.
