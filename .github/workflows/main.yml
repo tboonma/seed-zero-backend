@@ -1,0 +1,82 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  SERVICE_NAME: pr-${{ github.event.number }}-${{ github.event.repository.name }}
+  SERVICE_REGION: asia-southeast1
+
+jobs:
+  deploy-main:
+    name: Deploy to Cloud Run
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - name: Use gcloud CLI
+        run: |
+          gcloud run deploy ${{ github.event.repository.name }} \
+          --quiet \
+          --set-env-vars="NAME=starter-code" \
+          --region $SERVICE_REGION \
+          --source . \
+          --project ${{ secrets.GCP_PROJECT_ID }} \
+          --labels "commit-sha=${{ github.sha }}" \
+          --service-account ${{ secrets.GCP_SERVICE_ACCOUNT }}
+  deploy-exercise:
+    name: Deploy to Cloud Run (Beta version)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - name: Use gcloud CLI
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+          --quiet \
+          --set-env-vars="NAME=${{ github.event.pull_request.title }}" \
+          --region $SERVICE_REGION \
+          --source . \
+          --project ${{ secrets.GCP_PROJECT_ID }} \
+          --labels "commit-sha=${{ github.sha }}" \
+          --service-account ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: Config policy to allow unauthenticated
+        if: github.event.action == 'opened'
+        run: |
+          gcloud run services add-iam-policy-binding $BETA_SERVICE_NAME \
+          --quiet \
+          --region $BETA_SERVICE_REGION \
+          --member="allUsers" \
+          --role="roles/run.invoker"
+      - name: Get Service URL
+        if: github.event.action == 'opened'
+        id: service-url
+        run: |
+          echo "::set-output name=url::$(gcloud run services describe $BETA_SERVICE_NAME --region $BETA_SERVICE_REGION --format 'value(status.url)')"
+      - name: Notify update in PR
+        uses: thollander/actions-comment-pull-request@v1
+        if: success() && github.event.action == 'opened'
+        with:
+          message: |
+            New beta version for this Pull Request has been released
+            Service URL: ${{ steps.service-url.outputs.url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
