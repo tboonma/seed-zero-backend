@@ -38,7 +38,6 @@ jobs:
           --labels "commit-sha=${{ github.sha }}" \
           --service-account ${{ secrets.GCP_SERVICE_ACCOUNT }}
       - name: Config policy to allow unauthenticated
-        if: github.event.action == 'opened'
         run: |
           gcloud run services add-iam-policy-binding ${{ github.event.repository.name }} \
           --quiet \
