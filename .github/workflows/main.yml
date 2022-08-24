@@ -37,8 +37,16 @@ jobs:
           --project ${{ secrets.GCP_PROJECT_ID }} \
           --labels "commit-sha=${{ github.sha }}" \
           --service-account ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: Config policy to allow unauthenticated
+        if: github.event.action == 'opened'
+        run: |
+          gcloud run services add-iam-policy-binding ${{ github.event.repository.name }} \
+          --quiet \
+          --region $SERVICE_REGION \
+          --member="allUsers" \
+          --role="roles/run.invoker"
   deploy-exercise:
-    name: Deploy to Cloud Run (Beta version)
+    name: Deploy to Cloud Run (Exercise)
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
