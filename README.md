@@ -26,23 +26,32 @@ cd seed-zero-backend
 ```
 python -m venv venv
 ```
-5. Install dependencies
+5. Use the virtual environment
+- for MacOS/Linux
+```
+source venv/bin/activate
+```
+- for Windows
+```
+activate
+```
+6. Install dependencies
 ```
 pip install -r requirements.txt
 ```
-6. Run the app
+7. Run the app
 ```
 uvicorn main:app --reload
 ```
-7. Edit code in `#TODO` in `app.py`
-8. Test whether your code works by open these url in your browser.
+8. Edit code in `#TODO` in `app.py`
+9. Test whether your code works by open these url in your browser.
 - http://localhost:8000/ should display your text
 - http://localhost:8000/calculator?first_number=1&second_number=2 should display 3
-9. Upload your work
+10. Upload your work
 ```
 git add .
 git commit -m "Finish work"
 git push
 ```
-10. Open Pull Request in this repository.
-11. Go to your opened Pull Request and click the link in comment.
+11. Open Pull Request in this repository.
+12. Go to your opened Pull Request and click the link in comment.
