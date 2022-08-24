@@ -78,7 +78,7 @@ jobs:
         if: github.event.action == 'opened'
         id: service-url
         run: |
-          echo "::set-output name=url::$(gcloud run services describe $BETA_SERVICE_NAME --region $BETA_SERVICE_REGION --format 'value(status.url)')"
+          echo "::set-output name=url::$(gcloud run services describe $SERVICE_NAME --region $SERVICE_REGION --format 'value(status.url)')"
       - name: Notify update in PR
         uses: thollander/actions-comment-pull-request@v1
         if: success() && github.event.action == 'opened'
