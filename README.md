@@ -36,8 +36,8 @@ uvicorn main:app --reload
 ```
 7. Edit code in `#TODO` in `app.py`
 8. Test whether your code works by open these url in your browser.
-- http://localhost:5500/seed/zero should display your text
-- http://localhost:5500/math/1/2 should display 3
+- http://localhost:8000/ should display your text
+- http://localhost:8000/calculator?first_number=1&second_number=2 should display 3
 9. Upload your work
 ```
 git add .
