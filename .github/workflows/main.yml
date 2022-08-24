@@ -69,9 +69,9 @@ jobs:
       - name: Config policy to allow unauthenticated
         if: github.event.action == 'opened'
         run: |
-          gcloud run services add-iam-policy-binding $BETA_SERVICE_NAME \
+          gcloud run services add-iam-policy-binding $SERVICE_NAME \
           --quiet \
-          --region $BETA_SERVICE_REGION \
+          --region $SERVICE_REGION \
           --member="allUsers" \
           --role="roles/run.invoker"
       - name: Get Service URL
