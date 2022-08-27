@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SERVICE_NAME: pr-${{ github.event.number }}-${{ github.event.repository.name }}
+  SERVICE_NAME: ${{ github.event.pull_request.head.ref }}
   SERVICE_REGION: asia-southeast1
 
 jobs:
@@ -84,6 +84,6 @@ jobs:
         if: success() && github.event.action == 'opened'
         with:
           message: |
-            New beta version for this Pull Request has been released
-            Service URL: ${{ steps.service-url.outputs.url }}
+            This exercise is already in the server
+            URL: ${{ steps.service-url.outputs.url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
