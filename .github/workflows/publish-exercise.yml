@@ -1,9 +1,6 @@
 name: Deployment
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
 
 concurrency:
@@ -15,39 +12,30 @@ env:
   SERVICE_REGION: asia-southeast1
 
 jobs:
-  deploy-main:
-    name: Deploy to Cloud Run
+  test:
+    name: Check Exercise
     runs-on: ubuntu-latest
-    if: github.ref_name == 'main'
+    strategy:
+      matrix:
+        python-version: ['3.9']
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
-      - name: Use gcloud CLI
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
         run: |
-          gcloud run deploy ${{ github.event.repository.name }} \
-          --quiet \
-          --set-env-vars="NAME=starter-code" \
-          --region $SERVICE_REGION \
-          --source . \
-          --project ${{ secrets.GCP_PROJECT_ID }} \
-          --labels "commit-sha=${{ github.sha }}" \
-          --service-account ${{ secrets.GCP_SERVICE_ACCOUNT }}
-      - name: Config policy to allow unauthenticated
-        run: |
-          gcloud run services add-iam-policy-binding ${{ github.event.repository.name }} \
-          --quiet \
-          --region $SERVICE_REGION \
-          --member="allUsers" \
-          --role="roles/run.invoker"
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Test with Pytest
+        run: pytest
   deploy-exercise:
     name: Deploy to Cloud Run (Exercise)
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    needs: test
     steps:
       - uses: actions/checkout@v3
       - name: Set up Cloud SDK
