@@ -1,0 +1,45 @@
+name: Main job
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  SERVICE_NAME: ${{ github.event.repository.name }}
+  SERVICE_REGION: asia-southeast1
+
+jobs:
+  deploy-main:
+    name: Deploy to Cloud Run
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - name: Use gcloud CLI
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+          --quiet \
+          --set-env-vars="NAME=starter-code" \
+          --region $SERVICE_REGION \
+          --source . \
+          --project ${{ secrets.GCP_PROJECT_ID }} \
+          --labels "commit-sha=${{ github.sha }}" \
+          --service-account ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: Config policy to allow unauthenticated
+        run: |
+          gcloud run services add-iam-policy-binding $SERVICE_NAME \
+          --quiet \
+          --region $SERVICE_REGION \
+          --member="allUsers" \
+          --role="roles/run.invoker"
