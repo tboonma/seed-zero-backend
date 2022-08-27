@@ -9,7 +9,7 @@ NAME = config('NAME', default="World")
 app = FastAPI()
 
 # TODO: 1.) Add endpoint as a top-level page.
-@app.get("")
+@app.get("/")
 def index():
     return {"message": f"Hello {NAME}"}
 
