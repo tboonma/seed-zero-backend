@@ -16,7 +16,6 @@ jobs:
     name: Deploy to Cloud Run (Exercise)
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    needs: test
     steps:
       - uses: actions/checkout@v3
       - name: Set up Cloud SDK
