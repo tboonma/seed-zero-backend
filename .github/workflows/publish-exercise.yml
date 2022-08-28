@@ -8,9 +8,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GCP_PROJECT_ID: seed-zero
-  GCP_SERVICE_ACCOUNT: githubdeploy@seed-zero.iam.gserviceaccount.com
-  GCP_SA_KEY: publish.json
+  GCP_PROJECT_ID: seed-zero-backend
+  GCP_SERVICE_ACCOUNT: githubdeploy@seed-zero-backend.iam.gserviceaccount.com
+  GCP_SA_FILE: publish.json
   SERVICE_NAME: ${{ github.event.pull_request.head.ref }}
   SERVICE_REGION: asia-southeast1
 
@@ -21,11 +21,16 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v3
+      - name: Read JSON file
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./publish.json
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
         with:
-          project_id: $GCP_PROJECT_ID
-          service_account_key: $GCP_SA_KEY
+          project_id: seed-zero-backend
+          service_account_key: ${{ steps.package.outputs.content }}
           export_default_credentials: true
       - name: Use gcloud CLI
         run: |
