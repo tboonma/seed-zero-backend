@@ -44,19 +44,12 @@ jobs:
     name: Deploy to Cloud Run
     runs-on: ubuntu-latest
     if: github.ref_name == 'main'
+    needs: read-json
     strategy:
       matrix:
         GCP_SA_KEY: ${{fromJson(needs.read-json.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v3
-      - name: JSON to variables
-        uses: rgarcia-phi/json-to-variables@v1.1.0
-        with:
-          filename: './publish.json'
-          prefix: test
-          masked: true
-      - run: echo $GCP_SA_KEY
-      - run: echo "${{ env.test_value }}"
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
         with:
