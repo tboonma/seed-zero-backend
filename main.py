@@ -44,7 +44,7 @@ def divider(first_number: int, second_number: int):
 
 
 # TODO: 3.) Enter a path scheme that accept userId as a path parameter `userId`.
-@app.get("/{userId}")
+@app.get("/user/{userId}")
 def usersInfo(userId: int):
     if userId != 9997:
         raise HTTPException(status_code=404, detail="UserId not found.")
