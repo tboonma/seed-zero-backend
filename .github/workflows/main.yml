@@ -25,6 +25,7 @@ env:
       "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
       "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/githubdeploy%40seed-zero.iam.gserviceaccount.com"
     }
+  GCP_SA_FILE: publish.json
   SERVICE_NAME: ${{ github.event.repository.name }}
   SERVICE_REGION: asia-southeast1
 
@@ -35,14 +36,14 @@ jobs:
     if: github.ref_name == 'main'
     steps:
       - uses: actions/checkout@v3
-      - name: Read json
-        id: read-json
-        shell: pwsh
-        run: |
-          $json = Get-Content publish.json | ConvertFrom-Json
-          echo "::set-output name=prop::$(echo $json.prop)"
-      - run: echo ${{ steps.read-json.outputs.prop}}
+      - name: JSON to variables
+        uses: rgarcia-phi/json-to-variables@v1.1.0
+        with:
+          filename: 'publish.json'
+          prefix: test
+          masked: true
       - run: echo $GCP_SA_KEY
+      - run: echo "${{ env.test }}"
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
         with:
