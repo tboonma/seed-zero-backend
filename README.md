@@ -34,7 +34,7 @@ source venv/bin/activate
 ```
 - for Windows
 ```
-activate
+.\venv\Scripts\activate
 ```
 6. Install dependencies
 ```
@@ -72,7 +72,7 @@ source venv/bin/activate
 ```
 - for Windows
 ```
-activate
+.\venv\Scripts\activate
 ```
 4. Install dependencies
 ```
