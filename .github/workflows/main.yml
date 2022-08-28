@@ -39,11 +39,11 @@ jobs:
       - name: JSON to variables
         uses: rgarcia-phi/json-to-variables@v1.1.0
         with:
-          filename: 'publish.json'
+          filename: './publish.json'
           prefix: test
           masked: true
       - run: echo $GCP_SA_KEY
-      - run: echo ${{ env.test_value }}
+      - run: echo "${{ env.test_value }}"
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
         with:
