@@ -35,7 +35,6 @@ jobs:
           --labels "commit-sha=${{ github.sha }}" \
           --service-account ${{ secrets.GCP_SERVICE_ACCOUNT }}
       - name: Config policy to allow unauthenticated
-        if: github.event.action == 'opened'
         run: |
           gcloud run services add-iam-policy-binding $SERVICE_NAME \
           --quiet \
@@ -43,7 +42,6 @@ jobs:
           --member="allUsers" \
           --role="roles/run.invoker"
       - name: Get Service URL
-        if: github.event.action == 'opened'
         id: service-url
         run: |
           echo "::set-output name=url::$(gcloud run services describe $BETA_SERVICE_NAME --region $BETA_SERVICE_REGION --format 'value(status.url)')"
