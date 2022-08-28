@@ -42,7 +42,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: seed-zero
-          service_account_key: $GCP_SA_KEY_ENCODED
+          service_account_key: $GCP_SA_KEY_ENCODED2
           export_default_credentials: true
       - name: Use gcloud CLI
         run: |
