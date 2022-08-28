@@ -44,7 +44,7 @@ pip install -r requirements.txt
 ```
 uvicorn main:app --reload
 ```
-8. Edit code in `#TODO` in `app.py`
+8. Edit code in `#TODO` in `main.py`
 9. Test whether your code works by open these url in your browser.
 - http://localhost:8000/ should display your text
 - http://localhost:8000/calculator?first_number=1&second_number=2 should display 3
