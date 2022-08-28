@@ -27,7 +27,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: seed-zero
-          credentials_file_path: $GCP_SA_KEY
+          service_account_key: $GCP_SA_KEY
           export_default_credentials: true
       - name: Use gcloud CLI
         run: |
