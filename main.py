@@ -14,6 +14,7 @@ app = FastAPI()
 # endpoint as a top-level page.
 
 
+
 @app.get("/")
 def index():
     return {"message": f"Hello {NAME}"}
