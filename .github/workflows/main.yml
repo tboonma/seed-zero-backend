@@ -12,7 +12,7 @@ concurrency:
 env:
   GCP_PROJECT_ID: seed-zero
   GCP_SERVICE_ACCOUNT: githubdeploy@seed-zero.iam.gserviceaccount.com
-  GCP_SA_KEY: publish.json
+  GCP_SA_KEY: publish-encoded.txt
   SERVICE_NAME: ${{ github.event.repository.name }}
   SERVICE_REGION: asia-southeast1
 
