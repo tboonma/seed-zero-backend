@@ -27,7 +27,7 @@ jobs:
         id: read-json
         shell: pwsh
         run: |
-          $json = Get-Content yourfile.json | ConvertFrom-Json
+          $json = Get-Content publish.json | ConvertFrom-Json
           echo "::set-output name=prop::$(echo $json.prop)"
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
