@@ -23,17 +23,11 @@ jobs:
     if: github.ref_name == 'main'
     steps:
       - uses: actions/checkout@v3
-      - name: Read json
-        id: read-json
-        shell: pwsh
-        run: |
-          $json = Get-Content publish.json | ConvertFrom-Json
-          echo "::set-output name=prop::$(echo $json.prop)"
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: seed-zero
-          service_account_key: ${{ steps.read-json.outputs.prop}}
+          credentials_file_path: $GCP_SA_KEY
           export_default_credentials: true
       - name: Use gcloud CLI
         run: |
