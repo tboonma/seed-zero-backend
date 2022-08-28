@@ -1,10 +1,12 @@
 from http.client import HTTPException
 from fastapi import FastAPI, HTTPException
-from decouple import config
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 from models import Item
 
-NAME = config('NAME', default="World")
+NAME = os.getenv('NAME', default="World")
 
 app = FastAPI()
 
