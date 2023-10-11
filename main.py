@@ -1,6 +1,7 @@
 from http.client import HTTPException
 from fastapi import FastAPI, HTTPException
 from dotenv import load_dotenv
+from pydantic import BaseModel
 import os
 load_dotenv()
 
@@ -10,8 +11,12 @@ NAME = os.getenv('NAME', default="World")
 
 app = FastAPI()
 
+class Item(BaseModel):
+    name: str
+    price: float
+
 # TODO: 1.) Add endpoint as a top-level page.
-@app.get("")
+@app.get("/")
 def index():
     return {"message": f"Hello {NAME}"}
 
@@ -19,21 +24,27 @@ def index():
 @app.get("/calculator/add")
 def adder(first_number: int, second_number: int):
     # TODO: Start here
-    return {"first_number": first_number, "second_number": second_number, "result": 0}
+    return {"first_number": first_number, "second_number": second_number, "result": first_number + second_number}
 
 @app.get("/calculator/substract")
 def subtractor(first_number: int, second_number: int):
     # TODO: Start here
-    return {"first_number": first_number, "second_number": second_number, "result": 0}
+    return {"first_number": first_number, "second_number": second_number, "result": first_number - second_number}
 
-# TODO: (Optional) @app.get("/calculator/multiply")
+# TODO: (Optional) 
+@app.get("/calculator/multiply")
+def multiplier(first_number: int, second_number: int):
+    return {"first_number": first_number, "second_number": second_number, "result": first_number * second_number}
 
-# TODO: (Optional) @app.get("/calculator/divide")
+# TODO: (Optional) 
+@app.get("/calculator/divide")
+def divider(first_number: int, second_number: int):
+    return {"first_number": first_number, "second_number": second_number, "result": first_number / second_number}
 
 
 
 # TODO: 3.) Enter a path scheme that accept userId as a path parameter `userId`.
-@app.get("")
+@app.get("/user/{userId}")
 def usersInfo(userId: int):
     if userId != 9997:
         raise HTTPException(status_code=404, detail="UserId not found.")
@@ -51,7 +62,7 @@ def usersInfo(userId: int):
 #   "name": "Book",
 #   "price": 123,
 # }
-# @app.????(???)
+@app.post("/item")
 def itemCreator(item: Item):
     # TODO: Print body's name and price to console.
     return item.name, item.price
